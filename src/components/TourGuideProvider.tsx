@@ -23,7 +23,7 @@ export interface TourGuideProviderProps {
   androidStatusBarVisible?: boolean
   startAtMount?: string | boolean
   backdropColor?: string
-  verticalOffset?: number
+  verticalOffset?: {offset: number, zones?: number[]} // ! used to be 'number'
   wrapperStyle?: StyleProp<ViewStyle>
   maskOffset?: number
   borderRadius?: number
@@ -130,7 +130,7 @@ export const TourGuideProvider = ({
       width: size.width + OFFSET_WIDTH,
       height: size.height + OFFSET_WIDTH,
       left: Math.round(size.x) - OFFSET_WIDTH / 2,
-      top: Math.round(size.y) - OFFSET_WIDTH / 2 + (verticalOffset || 0),
+      top: Math.round(size.y) - OFFSET_WIDTH / 2 + (((verticalOffset && !verticalOffset.zones) || (verticalOffset && verticalOffset.zones.includes(currentStep[key].order))) ? verticalOffset.offset : 0), // ! used to be (verticalOffset || 0)
     })
   }
 
